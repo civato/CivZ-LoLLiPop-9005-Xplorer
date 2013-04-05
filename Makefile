@@ -1,7 +1,7 @@
 VERSION = 3
 PATCHLEVEL = 4
-SUBLEVEL = 40
-EXTRAVERSION =~CivZ-Lollipop_Xplorer-Rev4.5-N9005~
+SUBLEVEL = 50
+EXTRAVERSION =~CivZ-Lollipop_Xplorer-Rev4.6-N9005~
 NAME = Saber-toothed Squirrel
 
 # *DOCUMENTATION*

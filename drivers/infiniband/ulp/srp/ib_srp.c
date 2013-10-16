@@ -601,9 +601,19 @@ static void srp_remove_req(struct srp_target_port *target,
 
 static void srp_reset_req(struct srp_target_port *target, struct srp_request *req)
 {
+<<<<<<< HEAD
 	req->scmnd->result = DID_RESET << 16;
 	req->scmnd->scsi_done(req->scmnd);
 	srp_remove_req(target, req, 0);
+=======
+	struct scsi_cmnd *scmnd = srp_claim_req(target, req, NULL);
+
+	if (scmnd) {
+		srp_free_req(target, req, scmnd, 0);
+		scmnd->result = DID_RESET << 16;
+		scmnd->scsi_done(scmnd);
+	}
+>>>>>>> 30257f9... Linux 3.4.11 - 3.4.20
 }
 
 static int srp_reconnect_target(struct srp_target_port *target)
@@ -1640,6 +1650,14 @@ static int srp_abort(struct scsi_cmnd *scmnd)
 	if (srp_send_tsk_mgmt(target, req->index, scmnd->device->lun,
 			      SRP_TSK_ABORT_TASK))
 		return FAILED;
+<<<<<<< HEAD
+=======
+	srp_send_tsk_mgmt(target, req->index, scmnd->device->lun,
+			  SRP_TSK_ABORT_TASK);
+	srp_free_req(target, req, scmnd, 0);
+	scmnd->result = DID_ABORT << 16;
+	scmnd->scsi_done(scmnd);
+>>>>>>> 30257f9... Linux 3.4.11 - 3.4.20
 
 	if (req->scmnd) {
 		if (!target->tsk_mgmt_status) {

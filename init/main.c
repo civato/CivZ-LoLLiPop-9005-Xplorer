@@ -68,9 +68,14 @@
 #include <linux/shmem_fs.h>
 #include <linux/slab.h>
 #include <linux/perf_event.h>
+<<<<<<< HEAD
 #ifdef CONFIG_TIMA_RKP_COHERENT_TT
 #include <linux/memblock.h>
 #endif
+=======
+#include <linux/random.h>
+
+>>>>>>> 3eca8c8... Linux 3.4.67
 #include <asm/io.h>
 #include <asm/bugs.h>
 #include <asm/setup.h>
@@ -933,6 +938,7 @@ static void __init do_basic_setup(void)
 	do_ctors();
 	usermodehelper_enable();
 	do_initcalls();
+	random_int_secret_init();
 }
 
 static void __init do_pre_smp_initcalls(void)

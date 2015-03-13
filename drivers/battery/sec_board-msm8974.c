@@ -82,6 +82,16 @@ static struct battery_data_t samsung_battery_data[] = {
 		.RCOMP_charging = 0x80,
 		.temp_cohot = -700,
 		.temp_cocold = -4875,
+#elif defined(CONFIG_MACH_HLTECHNTWU)
+		.RCOMP0 = 0x6D,
+		.RCOMP_charging = 0x6D,
+		.temp_cohot = -900,
+		.temp_cocold = -3700,
+#elif defined(CONFIG_MACH_HLTE_CHN_CMCC) || defined(CONFIG_MACH_H3G_CHN_CMCC) || defined(CONFIG_MACH_H3G_CHN_OPEN)
+		.RCOMP0 = 0x73,
+		.RCOMP_charging = 0x8D,
+		.temp_cohot = -1000,
+		.temp_cocold = -4350,
 #elif defined(CONFIG_MACH_HLTEEUR)
 		.RCOMP0 = 0x62,
 		.RCOMP_charging = 0x7C,

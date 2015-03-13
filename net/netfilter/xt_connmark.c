@@ -56,97 +56,43 @@ MODULE_ALIAS("ip6t_connmark");
 #define META_UID_PID_MARK_BASE_UPPER 199
 #define META_MARK_BASE_UPPER 500
     
-    /* Structure to hold metadata values
-     * intended for VPN clients to make 
-     * more intelligent decisions
-     * when the KNOX meta mark 
-     * feature is enabled
-     */
+/* Structure to hold metadata values
+ * intended for VPN clients to make 
+ * more intelligent decisions
+ * when the KNOX meta mark 
+ * feature is enabled
+ */
     
-    struct skb_meta_param {
-        uid_t uid;
-        pid_t pid;
-    };
+struct knox_meta_param {
+    uid_t uid;
+    pid_t pid;
+};
 
-    union ip_address {
-        u8 a[4];
-        __be32 addr;
-    };
+union ip_address {
+    u8 a[4];
+    __be32 addr;
+};
     
-/*
 static unsigned int knoxvpn_uidpid(struct sk_buff *skb, u_int32_t newmark){
-    int metabufspace;
-    struct iphdr*  iph;
-    struct iphdr backup_iph;
-    struct skb_meta_param *uh;
-    unsigned char* temp = 0;
-    //union ip_address sip;
-    //union ip_address dip;
-    
-    iph = ip_hdr(skb);
-    
-    if (skb == NULL || newmark < META_UID_PID_MARK_BASE_LOWER || META_UID_PID_MARK_BASE_UPPER < newmark || skb->sk == NULL){
-        return -1;
-    }
+    int szMetaData;
+    struct skb_shared_info * temp = NULL;
 
-    // check address
-    if( (unsigned int)iph == (unsigned int)skb->data ){
-        //pr_err("KNOX: no error ");
+    szMetaData = sizeof(struct knox_meta_param);
+    temp = skb_shinfo(skb);
+    
+    if (skb == NULL || newmark < META_UID_PID_MARK_BASE_LOWER || META_UID_PID_MARK_BASE_UPPER < newmark || skb->sk == NULL || temp == NULL ){
+        return 0;
     }
     else{
-        return -1;
+        temp->uid = skb->sk->knox_uid;
+        temp->pid = skb->sk->knox_pid;
+        temp->knox_mark = newmark;
     }
 
-    metabufspace = sizeof(struct skb_meta_param);
-
-    pskb_expand_head(skb, metabufspace, 0, GFP_ATOMIC);
-
-    iph = ip_hdr(skb);
-
-    // check size 
-    if (iph->ihl != sizeof(struct iphdr)/4) {
-        return -1;
-    }
-
-    memcpy(&backup_iph, iph, sizeof(struct iphdr));
-
-    //------------------------------------------
-    // Insert UID/PID value
-    //------------------------------------------
-    
-    // >>>>>> 12bytes
-    uh = (struct skb_meta_param *)skb_pull(skb, (sizeof(struct iphdr) - metabufspace) );
-    uh->uid = skb->sk->knox_uid;
-    uh->pid = skb->sk->knox_pid;;
-
-    //pr_err("KNOX: >> 12 :  skb->data : %u", (unsigned int)skb->data);
-    //pr_err("KNOX: << 20 :  temp : %u", (unsigned int)uh);
-
-    // << 20 bytes
-    //pr_err("KNOX: << %d  ", sizeof(struct iphdr));
-    temp = skb_push(skb, sizeof(struct iphdr));   
-        
-    // modify ip hr
-    backup_iph.ihl = (sizeof(struct iphdr) + metabufspace) / 4;
-    backup_iph.tot_len += htons(metabufspace);
-
-    memcpy(temp, &backup_iph, sizeof(struct iphdr));
-
-    //------------------------------------------
-    // adjust a value
-    //------------------------------------------
-
-    skb_reset_network_header(skb);
-    
-    iph = ip_hdr(skb);
-    iph->check = 0;
-    ip_send_check(iph);
-
-    return 1;
+    return 0;
 }
-    
+
 // ------------- END of KNOX_VPN -------------------//
-*/
 
 static unsigned int
 connmark_tg(struct sk_buff *skb, const struct xt_action_param *par)
@@ -177,15 +123,7 @@ connmark_tg(struct sk_buff *skb, const struct xt_action_param *par)
 		}
         
 // ------------- START of KNOX_VPN -----------------//        
-        //knoxvpn_uidpid(skb,newmark);
-        if (skb == NULL || newmark < META_UID_PID_MARK_BASE_LOWER || META_UID_PID_MARK_BASE_UPPER < newmark || skb->sk == NULL){
-            skb->pid = 0;
-            skb->uid = 0;
-        }
-        else{
-            skb->pid = skb->sk->knox_pid;
-            skb->uid = skb->sk->knox_uid;
-        }
+        knoxvpn_uidpid(skb,newmark);
 // ------------- END of KNOX_VPN -------------------//
 
 		break;
@@ -195,15 +133,7 @@ connmark_tg(struct sk_buff *skb, const struct xt_action_param *par)
 		skb->mark = newmark;
 
 // ------------- START of KNOX_VPN -----------------//		
-        //knoxvpn_uidpid(skb,newmark);
-        if (skb == NULL || newmark < META_UID_PID_MARK_BASE_LOWER || META_UID_PID_MARK_BASE_UPPER < newmark || skb->sk == NULL){
-            skb->pid = 0;
-            skb->uid = 0;
-        }
-        else{
-            skb->pid = skb->sk->knox_pid;
-            skb->uid = skb->sk->knox_uid;
-        }
+        knoxvpn_uidpid(skb,newmark);
 // ------------- END of KNOX_VPN -------------------//
 
 		break;

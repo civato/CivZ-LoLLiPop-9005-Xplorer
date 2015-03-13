@@ -88,6 +88,11 @@ config MDNIE_LITE_TUNING
 	bool "MDNIe lite panel tuning"
 	default n
 
+config MDNIE_LITE_CONTROL
+	bool "Simple MDNIe lite control interface"
+	depends on MDNIE_LITE_TUNING
+	default n
+
 config MDNIE_ENHENCED_LOCAL_CE
 	bool "MDNIe lite panel tuning for enhenced local ce"
 	default n

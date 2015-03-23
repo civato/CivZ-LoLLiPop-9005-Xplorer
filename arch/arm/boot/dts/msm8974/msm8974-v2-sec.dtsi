@@ -54,34 +54,8 @@
 	qcom,usbin-vadc = <&pm8941_vadc>;
 };
 
-/* GPU overrides */
-&msm_gpu {
-	/* Updated chip ID */
-	qcom,chipid = <0x03030001>;
-
-	/* Updated bus bandwidth requirements */
-	qcom,msm-bus,vectors-KBps =
-		/* Off */
-		<26 512 0 0>, <89 604 0 0>,
-		/* Sub-SVS / SVS */
-		<26 512 0 1600000>, <89 604 0 3000000>,
-		/* SVS */
-		<26 512 0 2400000>, <89 604 0 3000000>,
-		/* Nominal / SVS */
-		<26 512 0 4656000>, <89 604 0 3000000>,
-		/* SVS / Nominal */
-		<26 512 0 2400000>, <89 604 0 5120000>,
-		/* Nominal */
-		<26 512 0 4656000>, <89 604 0 5120000>,
-		/* Turbo / Nominal */
-		<26 512 0 7464000>, <89 604 0 5120000>,
-		/* Nominal / Turbo */
-		<26 512 0 4912000>, <89 604 0 6400000>,
-		/* Turbo */
-		<26 512 0 7464000>, <89 604 0 6400000>;
-};
-
 &mdss_mdp {
+	qcom,max-bandwidth-low-kbps = <2750000>;
 	qcom,vbif-settings = <0x0004 0x00000001>;
 
 	qcom,mdss-wb-off = <0x00011100 0x00011500
@@ -137,7 +111,7 @@
 		<1608000 604000>,
 		<2576000 967000>,
 		<4680000 1404000>,
-		<49880000 1496000>;
+		<4988000 1496000>;
 	qcom,dec-ddr-ab-ib = <0 0>,
 		<208000 303000>,
 		<536000 1600000>,
@@ -146,6 +120,11 @@
 		<3240000 1600000>,
 		<4048000 1600000>,
 		<4264000 1600000>;
+    /*
+     * Performance is guaranteed only upto POR specification. Anything
+     * above that specification is best effort and might even be rejected.
+     */
+	qcom,max-hw-load = <1281600>; /* max(4k X 2304 @ 24, 4k X 2160 @ 30) + 1080p @ 30 */
 	qcom,buffer-type-tz-usage-table = <0x241 0x1>,
 					<0x106 0x2>,
 					<0x480 0x3>;

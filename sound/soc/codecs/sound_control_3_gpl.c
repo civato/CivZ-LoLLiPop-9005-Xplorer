@@ -373,7 +373,7 @@ static ssize_t sound_control_hw_revision_show (struct kobject *kobj,
 static ssize_t sound_control_version_show(struct kobject *kobj,
 		struct kobj_attribute *attr, char *buf)
 {
-	return sprintf(buf, "Version_Note3: %u.%u\n",
+	return sprintf(buf, "version: %u.%u\n",
 			SOUND_CONTROL_MAJOR_VERSION,
 			SOUND_CONTROL_MINOR_VERSION);
 }

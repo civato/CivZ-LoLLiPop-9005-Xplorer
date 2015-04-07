@@ -1,7 +1,7 @@
 VERSION = 3
 PATCHLEVEL = 4
 SUBLEVEL = 39
-EXTRAVERSION =~CivZ-Lollipop_Xplorer-Rev3.5-N9005~
+EXTRAVERSION =~CivZ-Lollipop_Xplorer-Rev3.8-N900T~
 NAME = Saber-toothed Squirrel
 
 # *DOCUMENTATION*
@@ -158,6 +158,7 @@ VPATH		:= $(srctree)$(if $(KBUILD_EXTMOD),:$(KBUILD_EXTMOD))
 
 export srctree objtree VPATH
 
+CCACHE := ccache
 
 # SUBARCH tells the usermode build what the underlying arch is.  That is set
 # first, and if a usermode build is happening, the "ARCH=um" on the command
@@ -243,8 +244,8 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-HOSTCC       = ccache gcc
-HOSTCXX      = ccache g++
+HOSTCC       = gcc
+HOSTCXX      = g++
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O3 -fomit-frame-pointer
 HOSTCXXFLAGS = -O3
 
@@ -573,7 +574,7 @@ all: vmlinux
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -Os $(call cc-disable-warning,maybe-uninitialized,)
 else
-KBUILD_CFLAGS	+= -O3 $(call cc-disable-warning,maybe-uninitialized,)
+KBUILD_CFLAGS	+= -O2
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile

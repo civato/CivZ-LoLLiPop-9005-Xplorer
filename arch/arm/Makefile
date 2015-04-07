@@ -267,6 +267,7 @@ core-y				+= arch/arm/net/
 core-y				+= arch/arm/crypto/
 core-y				+= $(machdirs) $(platdirs)
 core-$(CONFIG_INTELLI_PLUG)	+= arch/arm/hotplug/
+core-$(CONFIG_ALUCARD_HOTPLUG)	+= arch/arm/alucard/
 
 drivers-$(CONFIG_OPROFILE)      += arch/arm/oprofile/
 core-y				+= arch/arm/perfmon/

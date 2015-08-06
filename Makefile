@@ -1,7 +1,12 @@
 VERSION = 3
 PATCHLEVEL = 4
+<<<<<<< HEAD
 SUBLEVEL = 39
 EXTRAVERSION =~CivZ-Lollipop_Xplorer-Rev4.5-N9005~
+=======
+SUBLEVEL = 108
+EXTRAVERSION = -Audax-Kernel-v2.3-pierdebeer
+>>>>>>> 198667b... Updated to Linux 3.4.108
 NAME = Saber-toothed Squirrel
 
 # *DOCUMENTATION*

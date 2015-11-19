@@ -1,7 +1,7 @@
 #Building command -Euro
 export ARCH=arm
 export CROSS_COMPILE=~/KERNEL/TOOLCHAINS/arm-cortex-linux-gnueabi-linaro_4.9-master/bin/arm-cortex-linux-gnueabi-
-make CivZ2_sec_defconfig VARIANT_DEFCONFIG=msm8974_sec_hlte_eur_defconfig SELINUX_DEFCONFIG=selinux_defconfig
+make CivZ4_sec_defconfig VARIANT_DEFCONFIG=msm8974_sec_hlte_eur_defconfig SELINUX_DEFCONFIG=selinux_defconfig
 make -j5
 ./scripts/dtbTool -s 2048 -o arch/arm/boot/dt.img arch/arm/boot/
 rm -rf mod
@@ -14,7 +14,7 @@ cp `find ./ | grep .ko$` modules.order mod/
 
 export ARCH=arm
 export CROSS_COMPILE=~/KERNEL/TOOLCHAINS/arm-cortex_a15-linux-gnueabihf-linaro_4.9-master/bin/arm-cortex_a15-linux-gnueabihf-
-make CivZ2_sec_defconfig VARIANT_DEFCONFIG=msm8974_sec_hlte_eur_defconfig SELINUX_DEFCONFIG=selinux_defconfig
+make CivZ4_sec_defconfig VARIANT_DEFCONFIG=msm8974_sec_hlte_eur_defconfig SELINUX_DEFCONFIG=selinux_defconfig
 make -j5
 ./scripts/dtbTool -s 2048 -o arch/arm/boot/dt.img arch/arm/boot/
 rm -rf mod
@@ -23,13 +23,20 @@ cp `find ./ | grep .ko$` modules.order mod/
 
 
 ###########################################################################################################################################
-
+export ARCH=arm
+export CROSS_COMPILE=~/KERNEL/TOOLCHAINS/arm-cortex-linux-gnueabi-linaro_4.9-master/bin/arm-cortex-linux-gnueabi-
+make CivZ4_sec_defconfig VARIANT_DEFCONFIG=msm8974_sec_hlte_tmo_defconfig SELINUX_DEFCONFIG=selinux_defconfig
+make -j5
+./scripts/dtbTool -s 2048 -o arch/arm/boot/dt.img arch/arm/boot/
+rm -rf mod
+mkdir mod
+cp `find ./ | grep .ko$` modules.order mod/
 
 #########################################################################################################################################"
 
 export ARCH=arm
 export CROSS_COMPILE=~/KERNEL/TOOLCHAINS/arm-cortex_a15-linux-gnueabihf-linaro_4.9-master/bin/arm-cortex_a15-linux-gnueabihf-
-make CivZ2_sec_defconfig VARIANT_DEFCONFIG=msm8974_sec_hlte_tmo_defconfig SELINUX_DEFCONFIG=selinux_defconfig
+make CivZ4_sec_defconfig VARIANT_DEFCONFIG=msm8974_sec_hlte_tmo_defconfig SELINUX_DEFCONFIG=selinux_defconfig
 make -j5
 ./scripts/dtbTool -s 2048 -o arch/arm/boot/dt.img arch/arm/boot/
 rm -rf mod

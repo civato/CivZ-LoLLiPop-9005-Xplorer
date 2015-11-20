@@ -713,8 +713,6 @@ static int hrtimer_switch_to_hres(void)
 	return 1;
 }
 
-<<<<<<< HEAD
-=======
 static void clock_was_set_work(struct work_struct *work)
 {
 	clock_was_set();
@@ -731,7 +729,6 @@ void clock_was_set_delayed(void)
 	schedule_work(&hrtimer_work);
 }
 
->>>>>>> 2c31f30... Linux 3.4.51 - 3.4.60
 #else
 
 static inline int hrtimer_hres_active(void) { return 0; }

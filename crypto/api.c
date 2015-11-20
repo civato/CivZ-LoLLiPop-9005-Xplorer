@@ -154,19 +154,12 @@ static struct crypto_alg *crypto_larval_add(const char *name, u32 type,
 	}
 	up_write(&crypto_alg_sem);
 
-<<<<<<< HEAD
 	//patch from kernel 3.13.7 (refer to https://www.kernel.org/ & https://lkml.org/lkml/2013/9/7/139)
-=======
->>>>>>> 5f3654a... Linux 3.4.63
 	if (alg != &larval->alg) {
 		kfree(larval);
 		if (crypto_is_larval(alg))
 			alg = crypto_larval_wait(alg);
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> 5f3654a... Linux 3.4.63
 	return alg;
 }
 

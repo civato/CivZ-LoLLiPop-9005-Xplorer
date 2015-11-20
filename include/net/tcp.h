@@ -258,15 +258,12 @@ extern int sysctl_tcp_max_ssthresh;
 extern int sysctl_tcp_cookie_size;
 extern int sysctl_tcp_thin_linear_timeouts;
 extern int sysctl_tcp_thin_dupack;
-<<<<<<< HEAD
 extern int sysctl_tcp_default_init_rwnd;
 
 /* sysctl variables for controlling various tcp parameters */
 extern int sysctl_tcp_delack_seg;
 extern int sysctl_tcp_use_userconfig;
-=======
 extern int sysctl_tcp_challenge_ack_limit;
->>>>>>> 442ee87... Linux 3.4.21 - 3.4.30
 
 extern atomic_long_t tcp_memory_allocated;
 extern struct percpu_counter tcp_sockets_allocated;

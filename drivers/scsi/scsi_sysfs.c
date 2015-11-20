@@ -1035,43 +1035,14 @@ static int __remove_child (struct device * dev, void * data)
  */
 void scsi_remove_target(struct device *dev)
 {
-<<<<<<< HEAD
 	if (scsi_is_target_device(dev)) {
 		__scsi_remove_target(to_scsi_target(dev));
 		return;
-=======
-	struct Scsi_Host *shost = dev_to_shost(dev->parent);
-	struct scsi_target *starget, *last = NULL;
-	unsigned long flags;
-
-	/* remove targets being careful to lookup next entry before
-	 * deleting the last
-	 */
-	spin_lock_irqsave(shost->host_lock, flags);
-	list_for_each_entry(starget, &shost->__targets, siblings) {
-		if (starget->state == STARGET_DEL)
-			continue;
-		if (starget->dev.parent == dev || &starget->dev == dev) {
-			/* assuming new targets arrive at the end */
-			starget->reap_ref++;
-			spin_unlock_irqrestore(shost->host_lock, flags);
-			if (last)
-				scsi_target_reap(last);
-			last = starget;
-			__scsi_remove_target(starget);
-			spin_lock_irqsave(shost->host_lock, flags);
-		}
->>>>>>> 30257f9... Linux 3.4.11 - 3.4.20
 	}
 
-<<<<<<< HEAD
 	get_device(dev);
 	device_for_each_child(dev, NULL, __remove_child);
 	put_device(dev);
-=======
-	if (last)
-		scsi_target_reap(last);
->>>>>>> 30257f9... Linux 3.4.11 - 3.4.20
 }
 EXPORT_SYMBOL(scsi_remove_target);
 

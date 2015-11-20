@@ -701,7 +701,6 @@ repeat_in_this_group:
 				   "inode=%lu", ino + 1);
 			continue;
 		}
-<<<<<<< HEAD
 		if (!handle) {
 			BUG_ON(nblocks <= 0);
 			handle = ext4_journal_start_sb(dir->i_sb, nblocks);
@@ -710,16 +709,11 @@ repeat_in_this_group:
 				goto fail;
 			}
 		}
-=======
->>>>>>> 30257f9... Linux 3.4.11 - 3.4.20
 		BUFFER_TRACE(inode_bitmap_bh, "get_write_access");
 		err = ext4_journal_get_write_access(handle, inode_bitmap_bh);
 		if (err)
 			goto fail;
-<<<<<<< HEAD
 
-=======
->>>>>>> 30257f9... Linux 3.4.11 - 3.4.20
 		ext4_lock_group(sb, group);
 		ret2 = ext4_test_and_set_bit(ino, inode_bitmap_bh->b_data);
 		ext4_unlock_group(sb, group);

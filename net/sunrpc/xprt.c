@@ -992,11 +992,8 @@ void xprt_alloc_slot(struct rpc_xprt *xprt, struct rpc_task *task)
 		rpc_sleep_on(&xprt->backlog, task, NULL);
 		dprintk("RPC:       waiting for request slot\n");
 	}
-<<<<<<< HEAD
 	task->tk_status = -EAGAIN;
-=======
 	spin_unlock(&xprt->reserve_lock);
->>>>>>> 30257f9... Linux 3.4.11 - 3.4.20
 	return;
 out_init_req:
 	task->tk_status = 0;

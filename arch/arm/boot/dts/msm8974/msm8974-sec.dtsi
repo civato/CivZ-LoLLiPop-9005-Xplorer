@@ -72,13 +72,13 @@
 	memory {
 		secure_mem: secure_region {
 			linux,contiguous-region;
-			reg = <0 0xFC00000>;
+			reg = <0 0xA500000>;
 			label = "secure_mem";
 		};
 
 		adsp_mem: adsp_region {
 			linux,contiguous-region;
-			reg = <0 0x6500000>;
+			reg = <0 0x4100000>;
 			label = "adsp_mem";
 		};
 
@@ -2149,10 +2149,6 @@
 
 	qcom,msm-adsp-sensors {
 		compatible = "qcom,msm-adsp-sensors";
-		qcom,src-id = <11>;
-		qcom,dst-id = <604>;
-		qcom,ab = <32505856>;
-		qcom,ib = <32505856>;
 	};
 
 	qcom,mss@fc880000 {
@@ -2226,6 +2222,7 @@
 		gpios = <&msmgpio 36 0>, <&msmgpio 37 0>, <&msmgpio 38 0>, <&msmgpio 39 0>, <&msmgpio 40 0>;
 		qcom,has-48mhz-xo;
 		qcom,has-pronto-hw;
+		qcom,wcnss-pm = <11 19 1200 1 1 6>;
 	};
 
 	qcom,ocmem@fdd00000 {
@@ -2502,6 +2499,7 @@
 		qcom,poll-ms = <250>;
 		qcom,limit-temp = <80>;
 		qcom,temp-hysteresis = <10>;
+		qcom,therm-reset-temp = <115>;
 		qcom,freq-step = <2>;
 		qcom,freq-control-mask = <0xf>;
 		qcom,core-limit-temp = <85>;

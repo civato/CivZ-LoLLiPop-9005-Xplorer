@@ -50,7 +50,6 @@
 		qcom,mdss-pipe-vig-xin-id = <0 4 8>;
 		qcom,mdss-pipe-rgb-xin-id = <1 5 9>;
 		qcom,mdss-pipe-dma-xin-id = <2 10>;
-
 		qcom,mdss-pipe-vig-clk-ctrl-offsets = <0x3AC 0 0>,
 						      <0x3B4 0 0>,
 						      <0x3BC 0 0>;
@@ -59,7 +58,6 @@
 						      <0x3BC 4 8>;
 		qcom,mdss-pipe-dma-clk-ctrl-offsets = <0x3AC 8 12>,
 						      <0x3B4 8 12>;
-
 		qcom,mdss-smp-data = <22 4096>;
 
 		qcom,mdss-ctl-off = <0x00000600 0x00000700 0x00000800
@@ -103,9 +101,7 @@
 		mdss_fb0: qcom,mdss_fb_primary {
 			cell-index = <0>;
 			compatible = "qcom,mdss-fb";
-			qcom,memory-reservation-type = "EBI1";
-			qcom,memory-reservation-size = <0x800000>;
-			qcom,memblock-reserve = <0x03200000 0x01E00000>;
+			qcom,memory-alt-reservation-size = <0x1F40000>;	 /* Framebuffer reservation only for LPM or recovery boot mode */
 		};
 
 		mdss_fb1: qcom,mdss_fb_external {
@@ -132,21 +128,24 @@
 		vdda-supply = <&pm8941_l2>;
 		qcom,mdss-fb-map = <&mdss_fb0>;
 		qcom,mdss-mdp = <&mdss_mdp>;
-		qcom,platform-reset-gpio = <&pm8941_gpios 19 0>;
-		qcom,platform-enable-gpio = <&msmgpio 58 0>;
+		qcom,platform-reset-gpio = <&pm8941_gpios 9 0>;
+		qcom,platform-enable-gpio = <&pm8941_gpios 14 0>;
+		qcom,platform-pwm-gpio = <&pm8941_gpios 36 0>;
+		qcom,platform-reset-sequence = <1 20 0 200 1 20 2>;
 		qcom,platform-te-gpio = <&msmgpio 12 0>;
 		qcom,platform-strength-ctrl = [ff 06];
 		qcom,platform-bist-ctrl = [00 00 b1 ff 00 00];
 		qcom,platform-regulator-settings = [07 09 03 00 20 00 01];
-		qcom,platform-lane-config = [00 00 00 00 00 00 00 01 97
-			00 00 00 00 05 00 00 01 97
-			00 00 00 00 0a 00 00 01 97
-			00 00 00 00 0f 00 00 01 97
-			00 c0 00 00 00 00 00 01 bb];
+		qcom,platform-lane-config = [
+			00 c2 45 00 00 00 00 01 75 /* lane0 config */
+			00 c2 45 00 00 00 00 01 75 /* lane1 config */
+			00 c2 45 00 00 00 00 01 75 /* lane2 config */
+			00 c2 45 00 00 00 00 01 75 /* lane3 config */
+			00 02 45 00 00 00 00 01 97]; /* Clk ln config */
 		qcom,platform-supply-entry1 {
 				qcom,supply-name = "vdd";
-				qcom,supply-min-voltage = <3000000>;
-				qcom,supply-max-voltage = <3000000>;
+				qcom,supply-min-voltage = <3300000>;
+				qcom,supply-max-voltage = <3300000>;
 				qcom,supply-enable-load = <100000>;
 				qcom,supply-disable-load = <100>;
 				qcom,supply-pre-on-sleep = <0>;
@@ -161,7 +160,7 @@
 				qcom,supply-enable-load = <100000>;
 				qcom,supply-disable-load = <100>;
 				qcom,supply-pre-on-sleep = <0>;
-				qcom,supply-post-on-sleep = <20>;
+				qcom,supply-post-on-sleep = <0>;
 				qcom,supply-pre-off-sleep = <0>;
 				qcom,supply-post-off-sleep = <0>;
 		};
@@ -191,13 +190,16 @@
 		vdda-supply = <&pm8941_l2>;
 		qcom,mdss-fb-map = <&mdss_fb0>;
 		qcom,mdss-mdp = <&mdss_mdp>;
+		qcom,platform-enable-gpio = <&pm8941_gpios 14 0>;
+		qcom,platform-reset-gpio = <&pm8941_gpios 9 0>;
+		qcom,platform-reset-sequence = <1 20 0 200 1 20 2>;		
 		qcom,platform-strength-ctrl = [ff 06];
 		qcom,platform-bist-ctrl = [00 00 b1 ff 00 00];
 		qcom,platform-regulator-settings = [07 09 03 00 20 00 01];
 		qcom,platform-lane-config = [00 00 00 00 00 00 00 01 97
-			00 00 00 00 05 00 00 01 97
-			00 00 00 00 0a 00 00 01 97
-			00 00 00 00 0f 00 00 01 97
+			00 00 00 00 00 00 00 01 97
+			00 00 00 00 00 00 00 01 97
+			00 00 00 00 00 00 00 01 97
 			00 c0 00 00 00 00 00 01 bb];
 		qcom,platform-supply-entry1 {
 				qcom,supply-name = "vdd";
@@ -206,7 +208,7 @@
 				qcom,supply-enable-load = <100000>;
 				qcom,supply-disable-load = <100>;
 				qcom,supply-pre-on-sleep = <0>;
-				qcom,supply-post-on-sleep = <20>;
+				qcom,supply-post-on-sleep = <0>;
 				qcom,supply-pre-off-sleep = <0>;
 				qcom,supply-post-off-sleep = <0>;
 		};
@@ -217,7 +219,7 @@
 				qcom,supply-enable-load = <100000>;
 				qcom,supply-disable-load = <100>;
 				qcom,supply-pre-on-sleep = <0>;
-				qcom,supply-post-on-sleep = <20>;
+				qcom,supply-post-on-sleep = <0>;
 				qcom,supply-pre-off-sleep = <0>;
 				qcom,supply-post-off-sleep = <0>;
 		};
@@ -249,7 +251,7 @@
 		qcom,hdmi-tx-supply-names = "hpd-gdsc", "hpd-5v", "core-vdda", "core-vcc";
 		qcom,hdmi-tx-min-voltage-level = <0 0 1800000 1800000>;
 		qcom,hdmi-tx-max-voltage-level = <0 0 1800000 1800000>;
-		qcom,hdmi-tx-peak-current = <0 0 300000 0>;
+		qcom,hdmi-tx-peak-current = <0 0 3000000 0>;
 
 		qcom,hdmi-tx-cec = <&msmgpio 31 0>;
 		qcom,hdmi-tx-ddc-clk = <&msmgpio 32 0>;
@@ -275,6 +277,10 @@
 		reg-names = "edp_base", "mmss_cc_base";
 		vdda-supply = <&pm8941_l12>;
 		gpio-panel-en = <&msmgpio 58 0>;
+    gpio-panel-pwm = <&pm8941_gpios 36 0>; 
+    qcom,panel-lpg-channel = <7>; /* LPG Channel 8 */
+		qcom,panel-pwm-period = <53>;		
+		status = "disable";
 		qcom,mdss-fb-map = <&mdss_fb0>;
 		gpio-panel-hpd = <&msmgpio 102 0>;
 	};

@@ -2024,6 +2024,8 @@ module_param_named(limit_temp, msm_thermal_info.limit_temp_degC,
 		   uint, 0644);
 module_param_named(temp_hysteresis, msm_thermal_info.temp_hysteresis_degC,
 		   uint, 0644);
+module_param_named(therm_reset_temp, msm_thermal_info.therm_reset_temp_degC,
+		   uint, 0644);
 module_param_named(core_limit_temp, msm_thermal_info.core_limit_temp_degC,
 		   uint, 0644);
 module_param_named(hotplug_temp, msm_thermal_info.hotplug_temp_degC,

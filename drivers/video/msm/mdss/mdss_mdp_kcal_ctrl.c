@@ -181,6 +181,60 @@ static ssize_t kcal_store(struct device *dev, struct device_attribute *attr,
 	return count;
 }
 
+static ssize_t kcal_r_store(struct device *dev, struct device_attribute *attr,
+						const char *buf, size_t count)
+{
+	int kcal_r, r;
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	r = sscanf(buf, "%d", &kcal_r);
+	if ((r != 1) || (kcal_r < 1 || kcal_r > 256))
+		return -EINVAL;
+
+	lut_data->red = kcal_r;
+
+	mdss_mdp_kcal_update_pcc(lut_data);
+	mdss_mdp_kcal_display_commit();
+
+	return count;
+}
+
+static ssize_t kcal_g_store(struct device *dev, struct device_attribute *attr,
+						const char *buf, size_t count)
+{
+	int kcal_g, r;
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	r = sscanf(buf, "%d", &kcal_g);
+	if ((r != 1) || (kcal_g < 1 || kcal_g > 256))
+		return -EINVAL;
+
+	lut_data->green = kcal_g;
+
+	mdss_mdp_kcal_update_pcc(lut_data);
+	mdss_mdp_kcal_display_commit();
+
+	return count;
+}
+
+static ssize_t kcal_b_store(struct device *dev, struct device_attribute *attr,
+						const char *buf, size_t count)
+{
+	int kcal_b, r;
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	r = sscanf(buf, "%d", &kcal_b);
+	if ((r != 1) || (kcal_b < 1 || kcal_b > 256))
+		return -EINVAL;
+
+	lut_data->blue = kcal_b;
+
+	mdss_mdp_kcal_update_pcc(lut_data);
+	mdss_mdp_kcal_display_commit();
+
+	return count;
+}
+
 static ssize_t kcal_show(struct device *dev, struct device_attribute *attr,
 								char *buf)
 {
@@ -190,6 +244,39 @@ static ssize_t kcal_show(struct device *dev, struct device_attribute *attr,
 
 	return scnprintf(buf, PAGE_SIZE, "%d %d %d\n",
 		lut_data->red, lut_data->green, lut_data->blue);
+}
+
+static ssize_t kcal_r_show(struct device *dev, struct device_attribute *attr,
+								char *buf)
+{
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	mdss_mdp_kcal_read_pcc(lut_data);
+
+	return scnprintf(buf, PAGE_SIZE, "%d\n",
+		lut_data->red);
+}
+
+static ssize_t kcal_g_show(struct device *dev, struct device_attribute *attr,
+								char *buf)
+{
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	mdss_mdp_kcal_read_pcc(lut_data);
+
+	return scnprintf(buf, PAGE_SIZE, "%d\n",
+		lut_data->green);
+}
+
+static ssize_t kcal_b_show(struct device *dev, struct device_attribute *attr,
+								char *buf)
+{
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	mdss_mdp_kcal_read_pcc(lut_data);
+
+	return scnprintf(buf, PAGE_SIZE, "%d\n",
+		lut_data->blue);
 }
 
 static ssize_t kcal_min_store(struct device *dev,
@@ -378,6 +465,9 @@ static ssize_t kcal_cont_show(struct device *dev,
 }
 
 static DEVICE_ATTR(kcal, S_IWUSR | S_IRUGO, kcal_show, kcal_store);
+static DEVICE_ATTR(kcal_r, S_IWUSR | S_IRUGO, kcal_r_show, kcal_r_store);
+static DEVICE_ATTR(kcal_g, S_IWUSR | S_IRUGO, kcal_g_show, kcal_g_store);
+static DEVICE_ATTR(kcal_b, S_IWUSR | S_IRUGO, kcal_b_show, kcal_b_store);
 static DEVICE_ATTR(kcal_min, S_IWUSR | S_IRUGO, kcal_min_show, kcal_min_store);
 static DEVICE_ATTR(kcal_enable, S_IWUSR | S_IRUGO, kcal_enable_show,
 	kcal_enable_store);
@@ -419,6 +509,9 @@ static int kcal_ctrl_probe(struct platform_device *pdev)
 	mdss_mdp_kcal_display_commit();
 
 	ret = device_create_file(&pdev->dev, &dev_attr_kcal);
+	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_r);
+	ret |=device_create_file(&pdev->dev, &dev_attr_kcal_g);
+	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_b);
 	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_min);
 	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_enable);
 	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_invert);
@@ -437,6 +530,9 @@ static int kcal_ctrl_probe(struct platform_device *pdev)
 static int kcal_ctrl_remove(struct platform_device *pdev)
 {
 	device_remove_file(&pdev->dev, &dev_attr_kcal);
+	device_remove_file(&pdev->dev, &dev_attr_kcal_r);
+	device_remove_file(&pdev->dev, &dev_attr_kcal_g);
+	device_remove_file(&pdev->dev, &dev_attr_kcal_b);
 	device_remove_file(&pdev->dev, &dev_attr_kcal_min);
 	device_remove_file(&pdev->dev, &dev_attr_kcal_enable);
 	device_remove_file(&pdev->dev, &dev_attr_kcal_invert);

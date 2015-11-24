@@ -1,7 +1,7 @@
 VERSION = 3
 PATCHLEVEL = 4
 SUBLEVEL = 39
-EXTRAVERSION =~CivZ-Lollipop_Xplorer-Rev4.5-N9005~
+EXTRAVERSION =~CivZ-Lollipop_Xplorer-Rev4.6.1-N9005~
 NAME = Saber-toothed Squirrel
 
 # *DOCUMENTATION*
@@ -244,8 +244,8 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-HOSTCC       = gcc
-HOSTCXX      = g++
+HOSTCC       = $(CCACHE) gcc
+HOSTCXX      = $(CCACHE) g++
 HOSTCFLAGS   = -Wall -Wmissing-prototypes -Wstrict-prototypes -O3 -fomit-frame-pointer
 HOSTCXXFLAGS = -O3
 
@@ -331,7 +331,7 @@ include $(srctree)/scripts/Kbuild.include
 
 AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
-REAL_CC		= $(CROSS_COMPILE)gcc
+REAL_CC		= $(CCACHE) $(CROSS_COMPILE)gcc
 CPP		= $(CC) -E
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
@@ -604,6 +604,8 @@ ifndef CONFIG_FUNCTION_TRACER
 KBUILD_CFLAGS	+= -fomit-frame-pointer
 endif
 endif
+
+KBUILD_CFLAGS   += $(call cc-option, -fno-var-tracking-assignments)
 
 ifdef CONFIG_DEBUG_INFO
 KBUILD_CFLAGS	+= -g
